@@ -1,0 +1,84 @@
+@import "./common.scss";
+@import "./mixin.scss";
+
+body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4,h5, h6, i, b, textarea, button, input, select, figure, figcaption, {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-style: normal;
+  text-decoration: none;
+  border: none;
+  // color: #333;
+  font-weight: normal;
+  font-family: "Microsoft Yahei";
+  box-sizing: border-box;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-font-smoothing: antialiased;
+  &:hover{
+      outline: none;
+  }
+}
+
+html,body,div,span {
+  font-family: PingFangSC-Medium,sans-serif!important;
+}
+html{
+  height: 100%;
+}
+body {
+  font-size: .7rem;
+  height: 100%;
+}
+
+a:link {
+  text-decoration: none!important;
+}
+
+a:visited {
+  text-decoration: none!important;
+}
+
+a:hover {
+  text-decoration: none!important;
+}
+
+a:active {
+  text-decoration: none!important;
+}
+
+.sdd {
+  color: red;
+}
+.clear:after{
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.clear{
+  zoom:1;
+}
+
+.numcolor{
+  color: #c9c9c9
+}
+.clearfix:after{
+  content:"";
+  height:0;
+  line-height:0;
+  display:block;
+  clear:both;
+  visibility:hidden;
+  }
+  
+  .clearfix{
+   zoom:1;  //因为IE6不支持:after伪类。它的效果和height:1%一样
+  }
+
+.margin-lr-10 {
+  margin: 0 10px;
+}
+
+.mr_lr_3 {
+  margin: 0 3px
+}
