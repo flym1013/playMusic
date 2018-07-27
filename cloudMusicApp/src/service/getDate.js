@@ -200,3 +200,15 @@ export function getPlayLyric (opt) {
     params: opt
   })
 }
+
+/**
+ * 获取歌单详情 v不需要登录
+ * @param {Number} id 歌单 id
+ */
+export function getPlaylistDetail (opt) {
+  return fetch({
+    url: '/playlist/detail',
+    methods: 'get',
+    params: opt
+  })
+}

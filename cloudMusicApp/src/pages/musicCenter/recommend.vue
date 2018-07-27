@@ -55,9 +55,9 @@
         </router-link>
       </div>
       <div class="playlist_box clearfix">
-        <div v-for="(item, index) in playlist" :key="index" class="playlist_item" :class="{mr_lr_3:index === 1 || index === 4}">
+        <div v-for="(item, index) in playlist" :key="index" class="playlist_item" :class="{mr_lr_3:index === 1 || index === 4 || index === 7 || index === 10}">
           <div class="playlist_img">
-            <router-link to="">
+            <router-link :to="{ name: 'playlistDetail', params: { id: item.id }}">
               <img v-lazy="item.picUrl" alt="">
             </router-link>
             <span class="play_count"><van-icon name="browsing-history" class="icon_size" />{{Number(item.playCount/10000).toFixed(2) + "万"}}</span>
@@ -74,7 +74,7 @@
         </router-link>
       </div>
       <div class="playlist_box clearfix">
-        <div v-for="(item, index) in musicList" :key="index" class="playlist_item" :class="{mr_lr_3:index === 1 || index === 4}">
+        <div v-for="(item, index) in musicList" :key="index" class="playlist_item" :class="{mr_lr_3:index === 1 || index === 4 || index === 7}">
           <div class="playlist_img">
             <router-link to="">
               <img v-lazy="item.song.album.picUrl" alt="">
@@ -172,12 +172,12 @@ export default {
     // 获取推荐歌单(未登录)
     async getRecommendPlaylist () {
       let res = await getRecommendPlaylist()
-      this.playlist = res.data.result.slice(0, 6)
+      this.playlist = res.data.result.slice(0, 12)
     },
     // 获取推荐最新音乐(未登录)
     async getRecommendMusic () {
       let res = await getRecommendMusic()
-      this.musicList = res.data.result.slice(0, 6)
+      this.musicList = res.data.result.slice(0, 9)
     },
     // 获取推荐电台
     async getRecommendDJ () {

@@ -8,10 +8,16 @@ const play = {
       singer: '',
       singerImg: ''
     },
+    playType: {
+      playClass: 'icon-liebiaoxunhuan',
+      playText: '列表循环'
+    },
     isplaying: false, // 是否正在播放
     lrcData: [], // 歌词信息
     duration: 0, // 歌曲时间长
-    loop: false // 是否循环播放
+    loop: false, // 是否循环播放
+    playList: [], // 待播放列表
+    showPlayList: false // 展示播放列表.
   },
   mutations: {
     // 是否显示播放界面
@@ -48,6 +54,23 @@ const play = {
     // 歌曲时间长
     updateduration (state, newVal) {
       state.duration = newVal
+    },
+    // 待播放列表更新
+    updatedplaylist (state, newval) {
+      state.playList = newval
+    },
+    // 是否展示播放列表
+    isshowplaylist (state, newval) {
+      state.showPlayList = newval
+    },
+    // 更新播放类型
+    updatedplaytype (state, {playClass, playText}) {
+      if (playClass) {
+        state.playType.playClass = playClass
+      }
+      if (playText) {
+        state.playType.playText = playText
+      }
     }
   }
 }

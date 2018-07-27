@@ -25,3 +25,17 @@
     transform: translate3d(0,0,0);
 		-webkit-transform: translate3d(0,0,0);
 }
+//animation
+.fade-in-enter,
+.fade-in-leave-to{
+  opacity: 0;
+}
+.fade-in-enter-active,
+.fade-in-leave-active{
+  transition:all .4s ease;
+	-webkit-transition:all .4s ease;
+}
+.fade-in-enter-to,
+.fade-in-leave{
+    opacity: 1;
+}

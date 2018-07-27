@@ -115,7 +115,7 @@ export default {
       let res = await getDjRecommend()
       this.recommendList = res.data.djRadios
     },
-    // 获取电台分类并合并电台推荐
+    // 获取电台分类并合并电台推荐接口
     async getDjCategory () {
       let res = await getDjCategory()
       this.categoryList = res.data.categories
@@ -123,7 +123,7 @@ export default {
         let res = await getDjCategoryRecommend({ type: item.id })
         item.djDetail = res.data.djRadios.slice(0, 3)
       })
-      console.log(this.categoryList)
+      // console.log(this.categoryList)
     }
   }
 }

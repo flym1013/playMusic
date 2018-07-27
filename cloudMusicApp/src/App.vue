@@ -2,8 +2,14 @@
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
     <keep-alive>
-      <router-view/>
+      <router-view v-if="$route.meta.keepAlive">
+            <!-- 这里是会被缓存的视图组件 -->
+       </router-view>
     </keep-alive>
+
+    <router-view v-if="!$route.meta.keepAlive">
+        <!-- 这里是不被缓存的视图组件 -->
+    </router-view>
     <play @getCurTime="getCurTimes" :class="{'hidde_play':true,'show_play':showPlay}" ref="play"></play>
     <div class="play_bottom" v-if="showPlayBottom">
       <div class="pb_progress" :style="{width:bgWidth}"></div>
@@ -17,15 +23,17 @@
         </div>
         <div class="right_content">
           <span @click.stop="playSong"><i class="iconfont icon_size_play" :class="{'icon-bofang3': isplaying, 'icon-zanting': !isplaying}"></i></span>
-          <span><i class="iconfont icon-zhankaicaidan icon_size_play"></i></span>
+          <span><i class="iconfont icon-zhankaicaidan icon_size_play" @click.stop="isshowplaylist(true)"></i></span>
         </div>
       </div>
     </div>
+    <play-list></play-list>
   </div>
 </template>
 
 <script>
 import play from './components/play'
+import playList from './components/playList'
 import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'App',
@@ -44,7 +52,7 @@ export default {
   created () {
     console.log(this.showPlayBottom)
   },
-  components: { play },
+  components: { play, playList },
   watch: {
     // 监听时间变化，获取对应的歌词
     currentTime (val) {
@@ -58,7 +66,8 @@ export default {
   },
   methods: {
     ...mapMutations({
-      playing: 'playing'
+      playing: 'playing',
+      isshowplaylist: 'isshowplaylist'
     }),
     // 获取播放时间
     getCurTimes (value) {

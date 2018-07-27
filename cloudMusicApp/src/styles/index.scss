@@ -49,6 +49,9 @@ a:active {
 .sdd {
   color: red;
 }
+.icon_color{
+  color: $theme;
+}
 .clear:after{
   content: '';
   display: block;

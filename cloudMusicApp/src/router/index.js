@@ -12,6 +12,9 @@ import login from '@/pages/login/login.vue'
 // 我的音乐
 import myMusic from '@/pages/myMusic/myMusic.vue'
 
+// 共用页面
+import playlistDetail from '@/pages/publicPages/playlistDetail.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -33,8 +36,9 @@ export default new Router({
         // }
       ]
     },
-    { path: '/login', name: 'login', component: login },
+    { path: '/login', name: 'login', component: login, mate: { keepAlive: true } },
     { path: '/myMusic', name: 'myMusic', component: myMusic },
-    { path: '/recommendByday', name: 'recommendByday', component: recommendByday }
+    { path: '/recommendByday', name: 'recommendByday', component: recommendByday },
+    { path: '/playlistDetail', name: 'playlistDetail', component: playlistDetail }
   ]
 })

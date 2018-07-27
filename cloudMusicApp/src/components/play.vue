@@ -85,17 +85,17 @@
           <span class="duration">{{transformTime(duration)}}</span>
         </div>
         <div class="play_control">
-          <div class="play_type">
-            <i class="iconfont icon-danquxunhuan icon_size"></i>
+          <div class="play_type" @click="changPlayType">
+            <i class="iconfont icon_size" :class="[playType.playClass]"></i>
           </div>
           <div class="play_contorl_box">
-            <span class="play_upwarp"><i class="iconfont icon-shangyiqu101 icon_size"></i></span>
+            <span class="play_upwarp" @click="playPre"><i class="iconfont icon-shangyiqu101 icon_size"></i></span>
             <span class="play_start" @click="playSong">
               <i class="iconfont icon_size_play" :class="{'icon-bofang3': isplaying, 'icon-zanting': !isplaying}"></i>
             </span>
-            <span class="play_next"><i class="iconfont icon-xiayiqu101 icon_size"></i></span>
+            <span class="play_next" @click="playNext"><i class="iconfont icon-xiayiqu101 icon_size"></i></span>
           </div>
-          <div class="play_list">
+          <div class="play_list" @click="$store.commit('isshowplaylist', true)">
             <i class="iconfont icon-zhankaicaidan icon_size"></i>
           </div>
         </div>
@@ -133,7 +133,22 @@ export default {
       },
       // 歌词
       activeIndex: -1, // 歌词的当前索引
-      lyricDis: 0
+      lyricDis: 0,
+      playTypes: [
+        {
+          text: '列表循环',
+          Class: 'icon-liebiaoxunhuan'
+        },
+        {
+          text: '随机播放',
+          Class: 'icon-suiji'
+        },
+        {
+          text: '单曲循环',
+          Class: 'icon-danquxunhuan'
+        }
+      ],
+      playTypeIndex: 0
     }
   },
   async created () {
@@ -141,7 +156,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'showPlay', 'play', 'isplaying', 'loop', 'lrcData'
+      'showPlay', 'play', 'isplaying', 'loop', 'lrcData', 'playList', 'playType', 'showPlayList'
     ]),
     // 通过计算属性获取播放歌曲的id
     currentPlayId () {
@@ -233,6 +248,44 @@ export default {
       return minutes + ':' + seconds
     },
     // 媒体播放
+    // 上一曲
+    playPre () {
+      // 获取当前播放歌曲所在列表中的索引
+      let index = this.playList.findIndex(item => this.play.id === item.id)
+      if (this.playType.playText === '列表循环') {
+        index = index === 0 ? this.playList.length - 1 : index - 1
+      } else if (this.playType.playText === '随机播放') {
+        index = Math.round(Math.random() * (this.playList.length - 1))
+      }
+      // this.$store.commit('updateplayinfo', {id: '', name: '', singer: '', singerImg: ''})
+      this.$store.commit('updateplayinfo', {id: this.playList[index].id, name: this.playList[index].name, singer: this.playList[index].artists[0].name, singerImg: this.playList[index].album.blurPicUrl})
+      this.$store.commit('playing', false)
+    },
+    // 下一曲
+    playNext () {
+      // findIndex()方法返回数组中满足提供的测试函数的第一个元素的索引。否则返回-1。
+      let index = this.playList.findIndex(item => this.play.id === item.id)
+      if (this.playType.playText === '列表循环') {
+        index = index === this.playList.length - 1 ? 0 : index + 1
+      } else if (this.playType.playText === '随机播放') {
+        index = Math.round(Math.random() * (this.playList.length - 1))
+      }
+      this.$store.commit('updateplayinfo', {id: '', name: '', singer: '', singerImg: ''})
+      this.$store.commit('updateplayinfo', {id: this.playList[index].id, name: this.playList[index].name, singer: this.playList[index].artists[0].name, singerImg: this.playList[index].album.blurPicUrl})
+      this.$store.commit('playing', false)
+    },
+    // 改变音乐列表播放模式
+    changPlayType () {
+      this.$store.commit('updatedloop', false)
+      this.playTypeIndex++
+      if (this.playTypeIndex > this.playTypes.length - 1) {
+        this.playTypeIndex = 0
+      }
+      this.$store.commit('updatedplaytype', {playClass: this.playTypes[this.playTypeIndex].Class, playText: this.playTypes[this.playTypeIndex].text})
+      if (this.playType.playText === '单曲循环') {
+        this.$store.commit('updatedloop', true) // 将loop设置未ture，使之可以重新循环播放
+      }
+    },
     // 自动播放函数
     audioPlay () {
       clearInterval(this.timer)
@@ -245,6 +298,13 @@ export default {
         this.disX = Math.round(this.currentTime / this.duration * this.boxW)
         // 歌词播放计算位移
         this.calTranslate(this.currentTime)
+        // 当音乐播放完成
+        if (Math.ceil(this.currentTime) >= Math.floor(this.$refs.radio.duration)) {
+          this.disX = this.boxW
+          // 播放完一首继续下一首
+          console.log(this.loop)
+          this.playNext()
+        }
       }, 1000)
       this.duration = this.$refs.radio.duration
       this.$store.commit('updateduration', this.duration)
@@ -368,7 +428,8 @@ export default {
       width: 100%;
       height: 100%;
       z-index: 100;
-      transform: scale(3)
+      transform: scale(3);
+      filter: blur(20px) brightness(50%); // 高斯模糊效果
     }
   }
 }

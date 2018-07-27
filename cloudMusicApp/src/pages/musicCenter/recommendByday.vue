@@ -60,6 +60,7 @@ export default {
       this.$store.commit('playing', false)
       this.$store.commit('updateshowplaybottom', true)
       this.$store.commit('updateplayinfo', {id: obj.id, name: obj.name, singer: obj.artists[0].name, singerImg: obj.album.blurPicUrl})
+      this.$store.commit('updatedplaylist', this.songList)
     },
     // 获取每日推荐歌曲
     async getRecommendSongByDay () {
